@@ -7,6 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.139-009688?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.59-FF4B4B?logo=streamlit)](https://streamlit.io)
+[![Deploy on Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=https%3A%2F%2Fgithub.com%2FAniketSpecter%2FFinScore-AI&branch=main&mainModule=frontend%2Fstreamlit_app.py)
 [![XGBoost](https://img.shields.io/badge/XGBoost-3.2-orange?logo=xgboost)](https://xgboost.readthedocs.io)
 [![MLflow](https://img.shields.io/badge/MLflow-3.14-0194E2?logo=mlflow)](https://mlflow.org)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](https://docker.com)
