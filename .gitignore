@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+.env.*
+*.db
+*.sqlite
+*.sqlite3
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Model artefacts (large binaries — add back if you want to commit small models)
+models/*.joblib
+models/*.pkl
+models/*.onnx
+# These small artefacts make the demo runnable immediately after cloning.
+!models/best_model.joblib
+!models/feature_cols.joblib
+!models/scaler.joblib
+
+# MLflow
+mlflow/mlflow.db
+mlflow/artifacts/
+ml_pipeline/mlruns/
+ml_pipeline/models/
+
+# Dataset (never commit raw data to git)
+data/*.csv
+data/*.zip
+data/*.parquet
+!data/german_credit.csv
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/

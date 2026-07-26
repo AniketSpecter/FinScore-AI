@@ -1,0 +1,91 @@
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: finscore_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: finscoredb
+    ports:
+      - "5022:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── MLflow ──────────────────────────────────────────────────────────────────
+  mlflow_server:
+    image: python:3.12-slim
+    container_name: finscore_mlflow
+    restart: unless-stopped
+    ports:
+      - "4022:5000"
+    volumes:
+      - ./mlflow:/mlflow
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=postgresql://postgres:postgrespassword@postgres_db:5432/finscoredb
+    command: >
+      bash -c "pip install --quiet --trusted-host pypi.org --trusted-host files.pythonhosted.org
+               mlflow psycopg2-binary sqlalchemy &&
+               mlflow server
+               --backend-store-uri postgresql://postgres:postgrespassword@postgres_db:5432/finscoredb
+               --default-artifact-root /mlflow/artifacts
+               --host 0.0.0.0
+               --port 5000"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # ── FastAPI Backend ──────────────────────────────────────────────────────────
+  fastapi_backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: finscore_backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL:      postgresql://postgres:postgrespassword@postgres_db:5432/finscoredb
+      MODEL_PATH:        /app/models/best_model.joblib
+      FEATURE_COLS_PATH: /app/models/feature_cols.joblib
+      SCALER_PATH:       /app/models/scaler.joblib
+      MLFLOW_TRACKING_URI: http://mlflow_server:5000
+    ports:
+      - "3022:8000"
+    volumes:
+      - ./models:/app/models          # retraining replaces model artefacts
+      - ./ml_pipeline:/app/ml_pipeline:ro
+      - ./data:/app/data:ro
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+
+  # ── Streamlit Frontend ───────────────────────────────────────────────────────
+  streamlit_frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: finscore_frontend
+    restart: unless-stopped
+    environment:
+      API_URL: http://fastapi_backend:8000
+    ports:
+      - "2022:8501"
+    volumes:
+      - ./data:/app/data:ro           # dataset needed for analytics charts
+    depends_on:
+      fastapi_backend:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

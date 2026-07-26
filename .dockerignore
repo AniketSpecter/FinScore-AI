@@ -1,0 +1,14 @@
+.git
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.coverage
+htmlcov
+tests
+docs
+notebooks
+mlflow
+ml_pipeline/mlruns
+*.db
+*.log

@@ -1,0 +1,66 @@
+{
+  "model_name": "Logistic Regression",
+  "model_version": "logistic-regression-2026-07-26",
+  "trained_at": "2026-07-26T22:44:16.928879+00:00",
+  "selection_metric": "lowest Brier score among models within 0.01 of best ROC-AUC",
+  "dataset": "OpenML credit-g v1",
+  "training_rows": 800,
+  "test_rows": 200,
+  "feature_count": 50,
+  "excluded_sensitive_fields": [
+    "foreign_worker",
+    "personal_status"
+  ],
+  "input_profile": {
+    "credit_amount": {
+      "min": 250.0,
+      "p50": 2319.5,
+      "p90": 7179.4000000000015,
+      "max": 18424.0
+    },
+    "duration": {
+      "min": 4.0,
+      "p50": 18.0,
+      "p90": 36.0,
+      "max": 72.0
+    },
+    "age": {
+      "min": 19.0,
+      "p50": 33.0,
+      "p90": 52.0,
+      "max": 75.0
+    },
+    "installment_commitment": {
+      "min": 1.0,
+      "p50": 3.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "residence_since": {
+      "min": 1.0,
+      "p50": 3.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "existing_credits": {
+      "min": 1.0,
+      "p50": 1.0,
+      "p90": 2.0,
+      "max": 4.0
+    },
+    "num_dependents": {
+      "min": 1.0,
+      "p50": 1.0,
+      "p90": 2.0,
+      "max": 2.0
+    }
+  },
+  "metrics": {
+    "accuracy": 0.76,
+    "precision": 0.62,
+    "recall": 0.5167,
+    "f1": 0.5636,
+    "roc_auc": 0.7944,
+    "brier_score": 0.1578
+  }
+}
