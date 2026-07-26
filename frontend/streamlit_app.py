@@ -3,7 +3,16 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
+
+
+# Community Cloud adds the entrypoint directory (``frontend``) to sys.path,
+# not necessarily the repository root. Add the root before importing the
+# frontend package or backend modules.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from frontend.cloud_runtime import ensure_backend
 
